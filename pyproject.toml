@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dscr-tools"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python toolkit for loan amortization, DSCR tracking, covenant monitoring, and loan sizing"
 readme = "README.md"
 requires-python = ">=3.9"

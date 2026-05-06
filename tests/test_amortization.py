@@ -53,3 +53,28 @@ def test_summary_returns_dataframe(standard_loan):
 def test_arm_schedule_runs(arm_loan):
     sched = schedule(arm_loan, rate_adjustments={13: 0.075, 25: 0.085})
     assert len(sched) == arm_loan.total_periods
+
+
+def test_actual_360_partial_io_payment_correct():
+    """Actual/360 payment after I/O period should use correct day-count rate."""
+    from dscrtools.data.schema import LoanParams
+    from dscrtools.models.amortization import to_dataframe
+
+    loan = LoanParams(
+        loan_amount=1_000_000,
+        interest_rate=0.06,
+        amortization_years=30,
+        loan_term_years=10,
+        interest_method="partial_io",
+        io_periods=12,
+        payments_per_year=12,
+    )
+    df = to_dataframe(loan)
+
+    io_rows = df[df["is_io"] == True]
+    pi_rows = df[df["is_io"] == False]
+    assert len(io_rows) == 12
+    assert len(pi_rows) > 0
+    first_pi_payment = pi_rows["payment"].iloc[0]
+    last_io_payment = io_rows["payment"].iloc[-1]
+    assert first_pi_payment > last_io_payment

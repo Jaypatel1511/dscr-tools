@@ -50,8 +50,16 @@ def schedule(
         else:
             if loan.interest_method == "partial_io" and period == loan.io_periods + 1:
                 # Recompute payment on remaining balance after I/O period
+                # Use correct periodic rate based on day-count convention
                 remaining_periods = loan.amortization_periods - loan.io_periods
-                r = rate / loan.payments_per_year
+                if loan.interest_method == "fixed_actual_360":
+                    days_per_period = 360 / loan.payments_per_year
+                    r = (rate / 360) * days_per_period
+                elif loan.interest_method == "fixed_actual_365":
+                    days_per_period = 365 / loan.payments_per_year
+                    r = (rate / 365) * days_per_period
+                else:
+                    r = rate / loan.payments_per_year
                 if r == 0:
                     std_payment = balance / remaining_periods
                 else:
