@@ -15,4 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Jaypatel1511/dscr-tools"
+Homepage = "https://jaypatel1511.github.io/cdfi-superpowers/"
+Repository = "https://github.com/Jaypatel1511/dscr-tools"
+Documentation = "https://github.com/Jaypatel1511/dscr-tools#readme"
+Issues = "https://github.com/Jaypatel1511/dscr-tools/issues"
